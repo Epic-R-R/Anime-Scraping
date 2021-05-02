@@ -9,6 +9,9 @@ try:
 except ImportError:
     print(f'{Fore.RED}Some modules are not installed! Installing them with this command.\n{Fore.GREEN}pip install -r requirement.txt')
 
+title = []
+link = []
+
 def details(link):
     source_code = requests.get("https://www10.gogoanime.io"+link)
     content = source_code.content
@@ -19,7 +22,7 @@ def details(link):
     for elem in titles_detail:
         print(elem.getText())
         print("\n")
-        
+
 def get_details(soup):
     raw_soup = soup.find_all('div', {"class":'img'})
     for item in raw_soup:
