@@ -2,6 +2,8 @@ from PyInquirer import prompt
 from colorama import init, Fore
 from halo import Halo
 from styles import style
+from time import sleep
+import sys
 
 try:
     import requests
@@ -39,33 +41,45 @@ def entry():
         {
             "type": "input",
             "name": "anime_name",
-            "message": "[+] Enter the name of the Anime :"
+            "message": "Enter the name of the Anime :"
         }
     ]
     anime_name = prompt(question, style=style)
     search_url = f"https://www10.gogoanime.io//search.html?keyword={anime_name['anime_name']}"
+    spinner = Halo(stream=sys.stderr)
+    spinner.start("Loading for get data")
     source_code = requests.get(search_url)
     content = source_code.content
     global soup
     soup = BeautifulSoup(content,features="html.parser")
+    spinner.stop()
+    spinner.succeed("Loading Completed.")
     choice = [
         {
             "type": "list",
             "name": "choice",
-            "message": "[+] Do you want Details or Anime Links? (details/links) :",
+            "message": "Do you want Details or Anime Links? (details/links) :",
             "choices": ["details", "links"]
         }
     ]
     choice = prompt(choice, style=style)
     if choice["choice"] == "details":
+        spinner = Halo(stream=sys.stderr)
+        spinner.start("Loading for get details")
         get_details(soup)
         details(link[0])
+        spinner.stop()
+        spinner.succeed("Loading Completed.")
     elif choice["choice"] == "links":
+        spinner = Halo(stream=sys.stderr)
+        spinner.start("Loading for get links")
         get_details(soup)
         links(title,link)
+        spinner.stop()
+        spinner.succeed("Loading Completed.")
     else:
         print("[-] Enter a valid choice.")
 
 if __name__ == "__main__":
     init(autoreset=True)
-    # main()
+    entry()
