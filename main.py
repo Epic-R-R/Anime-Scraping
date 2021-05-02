@@ -10,6 +10,10 @@ except ImportError:
     print(f'{Fore.RED}Some modules are not installed! Installing them with this command.\n{Fore.GREEN}pip install -r requirement.txt')
 
 
+def links(title,link):
+    for i in range(len(title)):
+        print("%d. %s : https://www10.gogoanime.io%s\n" % (i+1,title[i],link[i]))
+
 def entry():
     question = [
         {
